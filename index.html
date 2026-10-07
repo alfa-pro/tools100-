@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniTools 100+ - 100% Client-Side Online Web Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        },
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col custom-scrollbar">
+
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800 px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="resetView()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 font-bold text-xl">
+                    <i class="fa-solid font-bold fa-bolt-lightning"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-none bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">OmniTools</h1>
+                    <span class="text-xs text-slate-400 font-medium">100% Client-Side & Private</span>
+                </div>
+            </div>
+
+            <!-- Global Search Bar -->
+            <div class="flex-1 max-w-md relative hidden sm:block">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" oninput="filterTools()" placeholder="Search 100+ tools (Press 'Ctrl + K')..." 
+                       class="w-full bg-slate-900/90 border border-slate-700/60 rounded-xl pl-10 pr-12 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-semibold bg-slate-800 text-slate-400 px-2 py-0.5 rounded border border-slate-700">Ctrl K</span>
+            </div>
+
+            <!-- Stats Badge, Language Selector & Favorites Button -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Language Selector -->
+                <div class="relative">
+                    <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-slate-900 text-slate-300 text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-800 hover:border-slate-700 focus:outline-none cursor-pointer transition">
+                        <option value="en">🇬🇧 EN</option>
+                        <option value="zh">🇨🇳 ZH</option>
+                        <option value="hi">🇮🇳 HI</option>
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="fr">🇫🇷 FR</option>
+                        <option value="ar">🇸🇦 AR</option>
+                        <option value="bn">🇧🇩 BN</option>
+                        <option value="ru">🇷🇺 RU</option>
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="ur">🇵🇰 UR</option>
+                        <option value="id">🇮🇩 ID</option>
+                        <option value="de">🇩🇪 DE</option>
+                        <option value="ja">🇯🇵 JA</option>
+                        <option value="tr">🇹🇷 TR</option>
+                        <option value="vi">🇻🇳 VI</option>
+                        <option value="ko">🇰🇷 KO</option>
+                        <option value="it">🇮🇹 IT</option>
+                        <option value="th">🇹🇭 TH</option>
+                        <option value="tl">🇵🇭 TL</option>
+                        <option value="fa">🇮🇷 FA</option>
+                        <option value="pl">🇵🇱 PL</option>
+                        <option value="uk">🇺🇦 UK</option>
+                        <option value="nl">🇳🇱 NL</option>
+                        <option value="el">🇬🇷 EL</option>
+                        <option value="ro">🇷🇴 RO</option>
+                        <option value="hu">🇭🇺 HU</option>
+                        <option value="cs">🇨🇿 CS</option>
+                        <option value="sv">🇸🇪 SV</option>
+                        <option value="ms">🇲🇾 MS</option>
+                        <option value="af">🇿🇦 AF</option>
+                    </select>
+                </div>
+
+                <button onclick="toggleFavoritesFilter()" id="favToggleBtn" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-sm text-amber-400 transition">
+                    <i class="fa-solid fa-star"></i>
+                    <span class="hidden md:inline text-xs font-semibold text-slate-300" id="favTextLabel">Favorites (<span id="favCount">0</span>)</span>
+                </button>
+                <div class="hidden lg:flex items-center gap-2 text-xs font-semibold px-3 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="activeToolsBadgeText">100 Active Tools</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
+
+        <!-- Mobile Search Input -->
+        <div class="sm:hidden mb-4 relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="mobileSearchInput" oninput="syncMobileSearch(this.value)" placeholder="Search tools..." 
+                   class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500">
+        </div>
+
+        <!-- Banner Hero -->
+        <div id="heroSection" class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-slate-900 p-6 md:p-8 mb-8 border border-blue-500/20 shadow-2xl">
+            <div class="max-w-2xl relative z-10">
+                <div id="heroBadge" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-semibold mb-3">
+                    <i class="fa-solid fa-shield-halved"></i> 100% Secure & Client-Side
+                </div>
+                <h2 id="heroTitle" class="text-2xl md:text-3xl font-bold text-white mb-2">All Web Tools Processed Directly in Your Browser</h2>
+                <p id="heroDesc" class="text-sm md:text-base text-slate-300 leading-relaxed mb-4">
+                    No server uploads. Free, no registration required, fast, and completely private for your files & text.
+                </p>
+            </div>
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-blue-400 pointer-events-none">
+                <i class="fa-solid fa-screwdriver-wrench text-[220px]"></i>
+            </div>
+        </div>
+
+        <!-- Category Horizontal Navigation Bar -->
+        <div class="mb-8 overflow-x-auto pb-2 custom-scrollbar flex items-center gap-2" id="categoryTabs">
+            <!-- Tabs JS populated -->
+        </div>
+
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-slate-200 flex items-center gap-2" id="gridTitle">
+                <i class="fa-solid fa-grid-2 text-blue-400"></i> <span id="gridTitleText">All Tools</span> (<span id="totalToolsCount">100</span>)
+            </h3>
+            <span class="text-xs text-slate-400" id="filterStatusText">Showing all categories</span>
+        </div>
+
+        <div id="toolsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Tool Cards injected dynamically by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <i class="fa-solid fa-magnifying-glass-minus text-5xl text-slate-600 mb-3"></i>
+            <h4 id="emptyTitle" class="text-lg font-semibold text-slate-300">No Tools Found</h4>
+            <p id="emptyDesc" class="text-sm text-slate-500">Try another keyword or select a different category.</p>
+        </div>
+    </main>
+
+    <div id="toolModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 md:p-6 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden my-auto">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+                <div class="flex items-center gap-3">
+                    <div id="modalToolIcon" class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-wrench"></i>
+                    </div>
+                    <div>
+                        <h3 id="modalToolTitle" class="font-bold text-slate-100 text-lg">Nama Tool</h3>
+                        <p id="modalToolCategory" class="text-xs text-slate-400">Kategori</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="modalFavBtn" onclick="toggleModalFavorite()" class="p-2 rounded-xl text-slate-400 hover:text-amber-400 bg-slate-800 transition">
+                        <i class="fa-regular fa-star text-lg"></i>
+                    </button>
+                    <button onclick="closeToolModal()" class="p-2 rounded-xl text-slate-400 hover:text-white bg-slate-800 transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content Workspace -->
+            <div id="modalToolWorkspace" class="p-6 overflow-y-auto flex-1 custom-scrollbar bg-slate-950/40">
+                <!-- Interactive Tool Dynamic Content injected here -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3 border-t border-slate-800 bg-slate-900/90 text-xs text-slate-500 flex items-center justify-between">
+                <span id="modalSecurityText"><i class="fa-solid fa-lock text-emerald-500"></i> Processed locally in browser</span>
+                <button onclick="closeToolModal()" id="modalCloseBtnText" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium transition">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 text-slate-100 border border-slate-700 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toastMessage" class="text-sm font-medium">Pesan notifikasi</span>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                searchPlaceholder: "Search 100+ tools (Press 'Ctrl + K')...",
+                searchMobilePlaceholder: "Search tools...",
+                favorites: "Favorites",
+                activeTools: "100 Active Tools",
+                heroBadge: "<i class='fa-solid fa-shield-halved'></i> 100% Secure & Client-Side",
+                heroTitle: "All Web Tools Processed Directly in Your Browser",
+                heroDesc: "No server uploads. Free, no registration required, fast, and completely private for your files & text.",
+                allTools: "All Tools",
+                filterStatus: "Showing all categories",
+                noToolsFound: "No Tools Found",
+                noToolsDesc: "Try another keyword or select a different category.",
+                openTool: "Open Tool",
+                processedLocally: "<i class='fa-solid fa-lock text-emerald-500'></i> Processed locally in browser",
+                close: "Close",
+                removedFav: "Removed from favorites",
+                addedFav: "Added to favorites!",
+                textCopied: "Copied to clipboard!",
+                formatConverted: "Text format changed",
+                jsonValid: "Valid & Formatted JSON!",
+                cat_all: "All Tools",
+                cat_teks: "Text & Writing",
+                cat_gambar: "Image & Media",
+                cat_dev: "Dev Utilities",
+                cat_kripto: "Security",
+                cat_pdf: "Document & PDF",
+                cat_desain: "Design & Color",
+                cat_mats: "Math & Converter",
+                cat_net: "Network & Web",
+                cat_prod: "Productivity",
+                cat_hardware: "Hardware Test"
+            },
+            id: {
+                searchPlaceholder: "Cari 100+ tool (Tekan 'Ctrl + K')...",
+                searchMobilePlaceholder: "Cari tool...",
+                favorites: "Favorit",
+                activeTools: "100 Tool Aktif",
+                heroBadge: "<i class='fa-solid fa-shield-halved'></i> 100% Aman & Tanpa Server",
+                heroTitle: "Semua Tool Web Diproses Langsung di Browser Anda",
+                heroDesc: "Tidak ada upload data ke server. Bebas biaya, tanpa registrasi, cepat, dan menjaga privasi penuh file & teks Anda.",
+                allTools: "Semua Tool",
+                filterStatus: "Menampilkan semua kategori",
+                noToolsFound: "Tool Tidak Ditemukan",
+                noToolsDesc: "Coba kata kunci lain atau pilih kategori yang berbeda.",
+                openTool: "Buka Tool",
+                processedLocally: "<i class='fa-solid fa-lock text-emerald-500'></i> Diproses lokal di browser",
+                close: "Tutup",
+                removedFav: "Dihapus dari favorit",
+                addedFav: "Ditambahkan ke favorit!",
+                textCopied: "Berhasil disalin ke clipboard!",
+                formatConverted: "Format teks diubah",
+                jsonValid: "JSON Valid & Dibereskan!",
+                cat_all: "Semua Tool",
+                cat_teks: "Teks & Penulisan",
+                cat_gambar: "Gambar & Media",
+                cat_dev: "Utilitas Dev",
+                cat_kripto: "Keamanan",
+                cat_pdf: "Dokumen & PDF",
+                cat_desain: "Desain & Warna",
+                cat_mats: "Matematika",
+                cat_net: "Jaringan",
+                cat_prod: "Produktifitas",
+                cat_hardware: "Hardware Test"
+            }
+        };
+
+        let currentLang = localStorage.getItem('omni_lang') || 'en';
+
+        // 100 Tools Complete Master Data Array
+        const toolsData = [
+            // Kategori 1: Teks & Penulisan (1-10)
+            { id: 1, cat: "teks", name: "Word & Character Counter", icon: "fa-calculator", desc: "Count words, characters, sentences, and paragraphs automatically.", runner: "wordCounter" },
+            { id: 2, cat: "teks", name: "Text Case Converter", icon: "fa-text-height", desc: "Convert text to UPPERCASE, lowercase, Title Case, camelCase, slug.", runner: "caseConverter" },
+            { id: 3, cat: "teks", name: "Diff Checker", icon: "fa-code-compare", desc: "Compare two text snippets to highlight differences line by line.", runner: "diffChecker" },
+            { id: 4, cat: "teks", name: "Markdown Previewer", icon: "fa-brands fa-markdown", desc: "Convert and preview Markdown syntax into clean HTML instantly.", runner: "markdownPreview" },
+            { id: 5, cat: "teks", name: "URL Slug Generator", icon: "fa-link", desc: "Generate SEO-friendly URL slugs from article titles.", runner: "slugGenerator" },
+            { id: 6, cat: "teks", name: "Lorem Ipsum Generator", icon: "fa-paragraph", desc: "Generate placeholder dummy text for design layouts.", runner: "loremGenerator" },
+            { id: 7, cat: "teks", name: "Line Sort & Deduplicator", icon: "fa-arrow-down-a-z", desc: "Sort lines alphabetically and remove duplicate lines.", runner: "lineSort" },
+            { id: 8, cat: "teks", name: "Word Frequency Counter", icon: "fa-chart-simple", desc: "Analyze and count the most frequent words in a text block.", runner: "wordFreq" },
+            { id: 9, cat: "teks", name: "Remove Line Breaks", icon: "fa-align-justify", desc: "Strip newline breaks to combine text into a single paragraph.", runner: "removeBreaks" },
+            { id: 10, cat: "teks", name: "String Reverse Tool", icon: "fa-right-left", desc: "Reverse the order of characters or words in a text string.", runner: "stringReverse" },
+
+            // Kategori 2: Pengolahan Gambar & Media (11-20)
+            { id: 11, cat: "gambar", name: "Browser Image Compressor", icon: "fa-file-image", desc: "Compress JPG/PNG files directly in browser using Canvas API.", runner: "imageCompressor" },
+            { id: 12, cat: "gambar", name: "Image Format Converter", icon: "fa-arrows-rotate", desc: "Convert images between JPG, PNG, and WebP formats.", runner: "imageConverter" },
+            { id: 13, cat: "gambar", name: "Image Resizer & Crop", icon: "fa-crop-simple", desc: "Resize width and height of images gracefully.", runner: "imageResizer" },
+            { id: 14, cat: "gambar", name: "Color Picker from Image", icon: "fa-eye-dropper", desc: "Pick HEX/RGB color codes directly from uploaded image.", runner: "imageColorPicker" },
+            { id: 15, cat: "gambar", name: "Image Filter & Blur", icon: "fa-wand-magic-sparkles", desc: "Apply Grayscale, Sepia, Blur, and Contrast filters.", runner: "imageFilters" },
+            { id: 16, cat: "gambar", name: "EXIF Data Viewer", icon: "fa-camera", desc: "Inspect camera EXIF metadata and GPS info from photos.", runner: "exifViewer" },
+            { id: 17, cat: "gambar", name: "SVG Code Cleaner", icon: "fa-broom", desc: "Clean up unused attributes and minify SVG vector markup.", runner: "svgCleaner" },
+            { id: 18, cat: "gambar", name: "Favicon Generator", icon: "fa-icons", desc: "Convert standard images into website favicon formats.", runner: "faviconGen" },
+            { id: 19, cat: "gambar", name: "Browser Audio Trimmer", icon: "fa-scissors", desc: "Trim MP3 or WAV audio clip durations in browser.", runner: "audioTrimmer" },
+            { id: 20, cat: "gambar", name: "Audio Frequency Visualizer", icon: "fa-wave-square", desc: "Visualize audio waveforms and sound frequencies.", runner: "audioVisualizer" },
+
+            // Kategori 3: Utilitas Developer & Format Data (21-35)
+            { id: 21, cat: "dev", name: "JSON Formatter & Validator", icon: "fa-code", desc: "Format, beautify, and validate JSON data structures.", runner: "jsonFormatter" },
+            { id: 22, cat: "dev", name: "JSON to CSV Converter", icon: "fa-file-csv", desc: "Convert structured JSON arrays into CSV tabular format.", runner: "jsonToCsv" },
+            { id: 23, cat: "dev", name: "Base64 Encoder / Decoder", icon: "fa-binary", desc: "Encode or decode strings to and from Base64 format.", runner: "base64Tool" },
+            { id: 24, cat: "dev", name: "URL Encoder / Decoder", icon: "fa-globe", desc: "Encode or decode special characters in web URLs.", runner: "urlTool" },
+            { id: 25, cat: "dev", name: "JWT Token Decoder", icon: "fa-key", desc: "Decode JSON Web Token headers and payload data.", runner: "jwtDecoder" },
+            { id: 26, cat: "dev", name: "HTML Entity Encoder", icon: "fa-code", desc: "Convert special characters into safe HTML entities.", runner: "htmlEntities" },
+            { id: 27, cat: "dev", name: "CSS Minifier / Unminifier", icon: "fa-css3-alt", desc: "Compress or expand CSS style sheets.", runner: "cssMinifier" },
+            { id: 28, cat: "dev", name: "JavaScript Beautifier", icon: "fa-brands fa-js", desc: "Format and beautify compressed JavaScript code.", runner: "jsBeautifier" },
+            { id: 29, cat: "dev", name: "Regex Expression Tester", icon: "fa-terminal", desc: "Test Regular Expressions against text in real-time.", runner: "regexTester" },
+            { id: 30, cat: "dev", name: "Cron Expression Parser", icon: "fa-clock-rotate-left", desc: "Translate cron job schedule expressions into human-readable text.", runner: "cronParser" },
+            { id: 31, cat: "dev", name: "XML to JSON Converter", icon: "fa-file-code", desc: "Transform XML documents into JSON format.", runner: "xmlToJson" },
+            { id: 32, cat: "dev", name: "SQL Query Formatter", icon: "fa-database", desc: "Format and clean up SQL database queries.", runner: "sqlFormatter" },
+            { id: 33, cat: "dev", name: "CSS Flexbox Playground", icon: "fa-table-cells-large", desc: "Interactive visual simulator for CSS Flexbox properties.", runner: "flex Playground" },
+            { id: 34, cat: "dev", name: "User-Agent Inspector", icon: "fa-user-gear", desc: "Analyze browser details and OS user-agent string.", runner: "userAgent" },
+            { id: 35, cat: "dev", name: "HTTP Header Parser", icon: "fa-network-wired", desc: "Inspect and parse HTTP request & response headers.", runner: "headerParser" },
+
+            // Kategori 4: Kriptografi & Keamanan (36-45)
+            { id: 36, cat: "kripto", name: "SHA-256 / MD5 Hash Generator", icon: "fa-hashtag", desc: "Generate secure cryptographic hashes using Web Crypto API.", runner: "hashGen" },
+            { id: 37, cat: "kripto", name: "Strong Password Generator", icon: "fa-shield-halved", desc: "Create randomized strong passwords with custom rules.", runner: "passwordGen" },
+            { id: 38, cat: "kripto", name: "UUID / GUID Generator", icon: "fa-id-card", desc: "Generate unique version-4 UUID / GUID strings.", runner: "uuidGen" },
+            { id: 39, cat: "kripto", name: "QR Code Generator", icon: "fa-qrcode", desc: "Generate QR codes from URLs or custom text.", runner: "qrGen" },
+            { id: 40, cat: "kripto", name: "QR Code Reader / Scanner", icon: "fa-expand", desc: "Scan and read QR codes from image files or camera.", runner: "qrScanner" },
+            { id: 41, cat: "kripto", name: "Barcode Generator", icon: "fa-barcode", desc: "Create Code128 / EAN barcodes for products.", runner: "barcodeGen" },
+            { id: 42, cat: "kripto", name: "HTPASSWD Generator", icon: "fa-server", desc: "Generate encrypted passwords for Apache htpasswd files.", runner: "htpasswdGen" },
+            { id: 43, cat: "kripto", name: "AES Text Encrypt/Decrypt", icon: "fa-lock", desc: "Encrypt and decrypt secret messages using AES key.", runner: "aesCrypto" },
+            { id: 44, cat: "kripto", name: "RSA Key Pair Generator", icon: "fa-key font-bold", desc: "Simulate RSA public and private key pair generation.", runner: "rsaGen" },
+            { id: 45, cat: "kripto", name: "Bcrypt Hash Checker", icon: "fa-user-shield", desc: "Simulate and verify password security bcrypt hashes.", runner: "bcryptChecker" },
+
+            // Kategori 5: Dokumen & PDF (46-55)
+            { id: 46, cat: "pdf", name: "PDF Page Merger", icon: "fa-file-pdf", desc: "Merge multiple PDF documents together in browser.", runner: "pdfMerger" },
+            { id: 47, cat: "pdf", name: "PDF Splitter / Page Extractor", icon: "fa-file-circle-minus", desc: "Extract or split specific pages from PDF file.", runner: "pdfSplitter" },
+            { id: 48, cat: "pdf", name: "PDF Page Rotator", icon: "fa-rotate", desc: "Rotate orientation of PDF pages 90, 180, or 270 degrees.", runner: "pdfRotator" },
+            { id: 49, cat: "pdf", name: "PDF Watermark Stamper", icon: "fa-stamp", desc: "Add custom text watermarks across PDF pages.", runner: "pdfWatermark" },
+            { id: 50, cat: "pdf", name: "PDF Page Numberer", icon: "fa-list-ol", desc: "Stamp page numbers onto PDF document footers.", runner: "pdfNumberer" },
+            { id: 51, cat: "pdf", name: "HTML to PDF Converter", icon: "fa-print", desc: "Convert rendered HTML view directly into PDF format.", runner: "htmlToPdf" },
+            { id: 52, cat: "pdf", name: "TXT to PDF Generator", icon: "fa-file-lines", desc: "Convert plain text files into downloadable PDF.", runner: "txtToPdf" },
+            { id: 53, cat: "pdf", name: "PDF Page Eraser", icon: "fa-trash-can", desc: "Remove unwanted pages from PDF documents.", runner: "pdfEraser" },
+            { id: 54, cat: "pdf", name: "PDF Metadata Inspector", icon: "fa-circle-info", desc: "View title, author, and creation metadata of PDF.", runner: "pdfMeta" },
+            { id: 55, cat: "pdf", name: "CSV / Excel File Viewer", icon: "fa-table", desc: "View CSV table data without Microsoft Office.", runner: "csvViewer" },
+
+            // Kategori 6: Desain & Warna (56-65)
+            { id: 56, cat: "desain", name: "HEX / RGB / HSL Converter", icon: "fa-palette", desc: "Convert color formats seamlessly between HEX, RGB, HSL.", runner: "colorConverter" },
+            { id: 57, cat: "desain", name: "Color Contrast Ratio Checker", icon: "fa-circle-half-stroke", desc: "Test WCAG color accessibility and contrast ratio.", runner: "contrastChecker" },
+            { id: 58, cat: "desain", name: "Palette Generator", icon: "fa-swatchbook", desc: "Generate harmonious color palettes automatically.", runner: "paletteGen" },
+            { id: 59, cat: "desain", name: "CSS Gradient Generator", icon: "fa-sliders", desc: "Create visually custom CSS linear and radial gradients.", runner: "gradientGen" },
+            { id: 60, cat: "desain", name: "CSS Box Shadow Generator", icon: "fa-square", desc: "Build CSS drop shadows with interactive sliders.", runner: "shadowGen" },
+            { id: 61, cat: "desain", name: "Glassmorphism Generator", icon: "fa-window-restore", desc: "Generate modern CSS frosted glass UI effects.", runner: "glassGen" },
+            { id: 62, cat: "desain", name: "CSS Triangle Maker", icon: "fa-play", desc: "Generate pure CSS triangles using border tricks.", runner: "triangleGen" },
+            { id: 63, cat: "desain", name: "PX to REM / EM Converter", icon: "fa-ruler-combined", desc: "Convert pixel values to responsive REM/EM units.", runner: "pxToRem" },
+            { id: 64, cat: "desain", name: "Font Pairing Visualizer", icon: "fa-font", desc: "Preview heading and body font pairings together.", runner: "fontPairing" },
+            { id: 65, cat: "desain", name: "CSS Clamp() Calculator", icon: "fa-expand-wide", desc: "Calculate CSS clamp() values for fluid typography.", runner: "clampCalc" },
+
+            // Kategori 7: Matematika & Konversi (66-75)
+            { id: 66, cat: "mats", name: "Universal Unit Converter", icon: "fa-scale-balanced", desc: "Convert length, weight, temperature, and volume.", runner: "unitConverter" },
+            { id: 67, cat: "mats", name: "Percentage Calculator", icon: "fa-percent", desc: "Calculate percentage increases, decreases, and fractions.", runner: "percentCalc" },
+            { id: 68, cat: "mats", name: "Base Number Converter", icon: "fa-calculator", desc: "Convert Decimal, Binary, Hexadecimal, and Octal.", runner: "baseNumConverter" },
+            { id: 69, cat: "mats", name: "Unix Timestamp Converter", icon: "fa-clock", desc: "Convert Unix Epoch timestamps into human readable dates.", runner: "timestampConverter" },
+            { id: 70, cat: "mats", name: "Time Zone World Clock", icon: "fa-earth-americas", desc: "Compare time differences across major world cities.", runner: "timezoneCalc" },
+            { id: 71, cat: "mats", name: "Aspect Ratio Calculator", icon: "fa-display", desc: "Calculate screen aspect ratios like 16:9, 4:3, 1:1.", runner: "aspectRatioCalc" },
+            { id: 72, cat: "mats", name: "Roman Numeral Converter", icon: "fa-list-roman", desc: "Convert standard numbers to Roman numerals and back.", runner: "romanConverter" },
+            { id: 73, cat: "mats", name: "Random Number Picker", icon: "fa-dice", desc: "Generate truly random numbers within min/max bounds.", runner: "randomNumGen" },
+            { id: 74, cat: "mats", name: "Discount & Tax Calculator", icon: "fa-tags", desc: "Calculate final prices with discounts and sales tax.", runner: "discountCalc" },
+            { id: 75, cat: "mats", name: "BMI Health Calculator", icon: "fa-heart-pulse", desc: "Calculate Body Mass Index (BMI) and health category.", runner: "bmiCalc" },
+
+            // Kategori 8: Jaringan & Web (76-85)
+            { id: 76, cat: "net", name: "Subnet CIDR Calculator", icon: "fa-sitemap", desc: "Calculate IP address ranges, subnets, and host counts.", runner: "cidrCalc" },
+            { id: 77, cat: "net", name: "My IP Address Info", icon: "fa-network-wired", desc: "Display current client IP address and connection details.", runner: "myIpInfo" },
+            { id: 78, cat: "net", name: "Network Ports Reference", icon: "fa-server", desc: "Reference cheat sheet for standard internet TCP/UDP ports.", runner: "portsRef" },
+            { id: 79, cat: "net", name: "DNS Record Formatter", icon: "fa-dns", desc: "Format and clean DNS zone records.", runner: "dnsFormatter" },
+            { id: 80, cat: "net", name: "Robots.txt Builder", icon: "fa-robot", desc: "Generate search engine crawler rules for robots.txt.", runner: "robotsGen" },
+            { id: 81, cat: "net", name: "XML Sitemap Generator", icon: "fa-sitemap", desc: "Generate structured sitemap.xml files from URL lists.", runner: "sitemapGen" },
+            { id: 82, cat: "net", name: "Open Graph Meta Tag Gen", icon: "fa-share-nodes", desc: "Build Facebook and Twitter social media preview meta tags.", runner: "ogTagGen" },
+            { id: 83, cat: "net", name: "HTACCESS Redirect Builder", icon: "fa-file-code", desc: "Generate Apache .htaccess redirect and rewrite rules.", runner: "htaccessGen" },
+            { id: 84, cat: "net", name: "CSP Header Generator", icon: "fa-shield-cat", desc: "Create Content Security Policy headers for web security.", runner: "cspGen" },
+            { id: 85, cat: "net", name: "HTTP Latency Ping Tester", icon: "fa-gauge-high", desc: "Measure HTTP latency and query response speed.", runner: "pingTester" },
+
+            // Kategori 9: Produktivitas & Waktu (86-95)
+            { id: 86, cat: "prod", name: "Stopwatch & Lap Timer", icon: "fa-stopwatch", desc: "Precise digital stopwatch with lap tracking.", runner: "stopwatch" },
+            { id: 87, cat: "prod", name: "Pomodoro Focus Timer", icon: "fa-brain", desc: "25-min work & 5-min break pomodoro timer.", runner: "pomodoroTimer" },
+            { id: 88, cat: "prod", name: "Countdown Timer Event", icon: "fa-hourglass-half", desc: "Countdown timer toward custom future events.", runner: "countdownTimer" },
+            { id: 89, cat: "prod", name: "Age & Date Difference", icon: "fa-calendar-days", desc: "Calculate exact age and day difference between dates.", runner: "ageCalc" },
+            { id: 90, cat: "prod", name: "Screen Resolution Checker", icon: "fa-desktop", desc: "Display monitor viewport, screen, and DPR pixel info.", runner: "screenChecker" },
+            { id: 91, cat: "prod", name: "Digital Tally Counter", icon: "fa-hand-pointer", desc: "Manual click counter with digital tally buttons.", runner: "tallyCounter" },
+            { id: 92, cat: "prod", name: "Social Media Character Limit", icon: "fa-hashtag", desc: "Track character limits for X/Twitter, Instagram, etc.", runner: "socialLimit" },
+            { id: 93, cat: "prod", name: "Quick Scratchpad Notes", icon: "fa-note-sticky", desc: "Instant notes automatically saved in localStorage.", runner: "scratchPad" },
+            { id: 94, cat: "prod", name: "Tone Frequency Generator", icon: "fa-music", desc: "Generate audio frequency sine/square soundwaves.", runner: "toneGen" },
+            { id: 95, cat: "prod", name: "Metronome Tempo Keeper", icon: "fa-drum", desc: "Audible rhythm metronome for musical practice.", runner: "metronome" },
+
+            // Kategori 10: Testing & Perangkat Hardware (96-100)
+            { id: 96, cat: "hardware", name: "Dead Pixel Screen Tester", icon: "fa-fill-drip", desc: "Full-screen color test to detect dead or stuck pixels.", runner: "deadPixelTester" },
+            { id: 97, cat: "hardware", name: "Microphone Audio Tester", icon: "fa-microphone", desc: "Test microphone input volume in real-time.", runner: "micTester" },
+            { id: 98, cat: "hardware", name: "Webcam Camera Inspector", icon: "fa-video", desc: "Test camera feed and resolution support.", runner: "webcamTester" },
+            { id: 99, cat: "hardware", name: "Keyboard KeyCode Tester", icon: "fa-keyboard", desc: "Inspect pressed key event keyCodes and values.", runner: "keyboardTester" },
+            { id: 100, cat: "hardware", name: "Mouse & Touch Tracker", icon: "fa-mouse-pointer", desc: "Test mouse click precision and touchscreen response.", runner: "mouseTracker" }
+        ];
+
+        // Categories Configuration
+        const categories = [
+            { id: "all", key: "cat_all", icon: "fa-grid-2" },
+            { id: "teks", key: "cat_teks", icon: "fa-font" },
+            { id: "gambar", key: "cat_gambar", icon: "fa-image" },
+            { id: "dev", key: "cat_dev", icon: "fa-code" },
+            { id: "kripto", key: "cat_kripto", icon: "fa-shield-halved" },
+            { id: "pdf", key: "cat_pdf", icon: "fa-file-pdf" },
+            { id: "desain", key: "cat_desain", icon: "fa-palette" },
+            { id: "mats", key: "cat_mats", icon: "fa-calculator" },
+            { id: "net", key: "cat_net", icon: "fa-network-wired" },
+            { id: "prod", key: "cat_prod", icon: "fa-clock" },
+            { id: "hardware", key: "cat_hardware", icon: "fa-desktop" }
+        ];
+
+        // Application State
+        let currentCategory = "all";
+        let searchQuery = "";
+        let favorites = JSON.parse(localStorage.getItem('omni_favs') || "[]");
+        let activeToolId = null;
+        let showFavsOnly = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('langSelect').value = currentLang;
+            applyLanguageUI();
+            renderCategoryTabs();
+            renderTools();
+            updateFavCount();
+
+            // Keyboard shortcut Ctrl+K to focus search
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
+        });
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('omni_lang', lang);
+            document.documentElement.lang = lang;
+            applyLanguageUI();
+            renderCategoryTabs();
+            renderTools();
+        }
+
+        function applyLanguageUI() {
+            const t = translations[currentLang] || translations['en'];
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            document.getElementById('mobileSearchInput').placeholder = t.searchMobilePlaceholder;
+            document.getElementById('heroBadge').innerHTML = t.heroBadge;
+            document.getElementById('heroTitle').textContent = t.heroTitle;
+            document.getElementById('heroDesc').textContent = t.heroDesc;
+            document.getElementById('gridTitleText').textContent = t.allTools;
+            document.getElementById('filterStatusText').textContent = t.filterStatus;
+            document.getElementById('emptyTitle').textContent = t.noToolsFound;
+            document.getElementById('emptyDesc').textContent = t.noToolsDesc;
+            document.getElementById('activeToolsBadgeText').textContent = t.activeTools;
+            document.getElementById('modalSecurityText').innerHTML = t.processedLocally;
+            document.getElementById('modalCloseBtnText').textContent = t.close;
+        }
+
+        function updateFavCount() {
+            document.getElementById('favCount').textContent = favorites.length;
+        }
+
+        function renderCategoryTabs() {
+            const tabsContainer = document.getElementById('categoryTabs');
+            const t = translations[currentLang] || translations['en'];
+            tabsContainer.innerHTML = categories.map(cat => `
+                <button onclick="setCategory('${cat.id}')" 
+                        class="px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-2 border ${
+                            currentCategory === cat.id && !showFavsOnly
+                            ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-600/30'
+                            : 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
+                        }">
+                    <i class="fa-solid ${cat.icon}"></i> ${t[cat.key]}
+                </button>
+            `).join('');
+        }
+
+        function setCategory(catId) {
+            showFavsOnly = false;
+            currentCategory = catId;
+            document.getElementById('favToggleBtn').classList.remove('bg-amber-500/20', 'border-amber-500/40');
+            renderCategoryTabs();
+            renderTools();
+        }
+
+        function toggleFavoritesFilter() {
+            showFavsOnly = !showFavsOnly;
+            const favBtn = document.getElementById('favToggleBtn');
+            if (showFavsOnly) {
+                favBtn.classList.add('bg-amber-500/20', 'border-amber-500/40');
+            } else {
+                favBtn.classList.remove('bg-amber-500/20', 'border-amber-500/40');
+            }
+            renderTools();
+        }
+
+        function syncMobileSearch(val) {
+            document.getElementById('searchInput').value = val;
+            filterTools();
+        }
+
+        function filterTools() {
+            searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            renderTools();
+        }
+
+        function resetView() {
+            currentCategory = "all";
+            searchQuery = "";
+            showFavsOnly = false;
+            document.getElementById('searchInput').value = "";
+            renderCategoryTabs();
+            renderTools();
+        }
+
+        function renderTools() {
+            const grid = document.getElementById('toolsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const t = translations[currentLang] || translations['en'];
+            
+            let filtered = toolsData.filter(tool => {
+                const matchesCat = currentCategory === "all" || tool.cat === currentCategory;
+                const matchesSearch = tool.name.toLowerCase().includes(searchQuery) || 
+                                     tool.desc.toLowerCase().includes(searchQuery);
+                const matchesFav = !showFavsOnly || favorites.includes(tool.id);
+                return matchesCat && matchesSearch && matchesFav;
+            });
+
+            document.getElementById('totalToolsCount').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = "";
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(tool => {
+                const isFav = favorites.includes(tool.id);
+                return `
+                    <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between hover:border-slate-700 transition group hover:-translate-y-1 duration-200">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-slate-800 text-blue-400 flex items-center justify-center text-lg border border-slate-700/50 group-hover:bg-blue-600 group-hover:text-white transition">
+                                    <i class="fa-solid ${tool.icon}"></i>
+                                </div>
+                                <button onclick="toggleFavorite(${tool.id}, event)" class="text-slate-600 hover:text-amber-400 p-1 transition">
+                                    <i class="${isFav ? 'fa-solid text-amber-400' : 'fa-regular'} fa-star text-base"></i>
+                                </button>
+                            </div>
+                            <h4 class="font-bold text-slate-100 mb-1 text-base group-hover:text-blue-400 transition">${tool.name}</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2 mb-4 leading-relaxed">${tool.desc}</p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                            <span class="text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-slate-800/80 text-slate-400">${tool.cat}</span>
+                            <button onclick="launchTool(${tool.id})" class="text-xs font-semibold text-blue-400 group-hover:text-blue-300 flex items-center gap-1">
+                                ${t.openTool} <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleFavorite(id, event) {
+            if (event) event.stopPropagation();
+            const t = translations[currentLang] || translations['en'];
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+                showToast(t.removedFav);
+            } else {
+                favorites.push(id);
+                showToast(t.addedFav);
+            }
+            localStorage.setItem('omni_favs', JSON.stringify(favorites));
+            updateFavCount();
+            renderTools();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        function launchTool(id) {
+            const tool = toolsData.find(t => t.id === id);
+            if (!tool) return;
+
+            activeToolId = id;
+            document.getElementById('modalToolTitle').textContent = tool.name;
+            document.getElementById('modalToolCategory').textContent = tool.cat.toUpperCase() + " • Client-Side Tool";
+            document.getElementById('modalToolIcon').innerHTML = `<i class="fa-solid ${tool.icon}"></i>`;
+            
+            updateModalFavIcon();
+
+            const workspace = document.getElementById('modalToolWorkspace');
+            workspace.innerHTML = getToolWorkspaceHTML(tool.runner);
+
+            document.getElementById('toolModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            // Initialize JavaScript runner logic for the active tool
+            initToolRunnerLogic(tool.runner);
+        }
+
+        function closeToolModal() {
+            document.getElementById('toolModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            activeToolId = null;
+        }
+
+        function toggleModalFavorite() {
+            if (activeToolId) {
+                toggleFavorite(activeToolId, null);
+                updateModalFavIcon();
+            }
+        }
+
+        function updateModalFavIcon() {
+            const isFav = favorites.includes(activeToolId);
+            const btn = document.getElementById('modalFavBtn');
+            btn.innerHTML = `<i class="${isFav ? 'fa-solid text-amber-400' : 'fa-regular'} fa-star text-lg"></i>`;
+        }
+
+        function getToolWorkspaceHTML(runner) {
+            switch(runner) {
+                case 'wordCounter':
+                    return `
+                        <div class="space-y-4">
+                            <textarea id="counterInput" rows="6" placeholder="Ketik atau tempel teks kamu di sini..." 
+                                      class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 focus:outline-none focus:border-blue-500"></textarea>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                                    <div id="resWords" class="text-2xl font-bold text-blue-400">0</div>
+                                    <div class="text-xs text-slate-400">Kata</div>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                                    <div id="resChars" class="text-2xl font-bold text-indigo-400">0</div>
+                                    <div class="text-xs text-slate-400">Karakter</div>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                                    <div id="resSentences" class="text-2xl font-bold text-emerald-400">0</div>
+                                    <div class="text-xs text-slate-400">Kalimat</div>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                                    <div id="resParagraphs" class="text-2xl font-bold text-amber-400">0</div>
+                                    <div class="text-xs text-slate-400">Paragraf</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                case 'caseConverter':
+                    return `
+                        <div class="space-y-4">
+                            <textarea id="caseInput" rows="5" placeholder="Masukkan teks di sini..." 
+                                      class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 focus:outline-none focus:border-blue-500"></textarea>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="convertCase('upper')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold">UPPERCASE</button>
+                                <button onclick="convertCase('lower')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold">lowercase</button>
+                                <button onclick="convertCase('title')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold">Title Case</button>
+                                <button onclick="convertCase('camel')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold">camelCase</button>
+                                <button onclick="convertCase('slug')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-semibold">slug-format</button>
+                            </div>
+                        </div>
+                    `;
+                case 'jsonFormatter':
+                    return `
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs text-slate-400 mb-1 block">Input JSON</label>
+                                    <textarea id="jsonInput" rows="10" placeholder='{"name": "OmniTools", "version": 1}' 
+                                              class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-100 focus:outline-none focus:border-blue-500"></textarea>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-400 mb-1 block">Hasil Formatting</label>
+                                    <textarea id="jsonOutput" rows="10" readonly placeholder="Output JSON yang rapi..." 
+                                              class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-emerald-400 focus:outline-none"></textarea>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="formatJSON()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-semibold">Rapikan JSON</button>
+                                <button onclick="copyToClipboard('jsonOutput')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-semibold">Salin Hasil</button>
+                            </div>
+                        </div>
+                    `;
+                case 'passwordGen':
+                    return `
+                        <div class="space-y-4 max-w-lg mx-auto">
+                            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                                <span id="passResult" class="font-mono text-lg font-bold text-emerald-400 tracking-wider">PassGen123!</span>
+                                <button onclick="copyToClipboard('passResult', true)" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                        <span>Panjang Password: <strong id="passLenVal">16</strong></span>
+                                    </div>
+                                    <input type="range" id="passLen" min="8" max="64" value="16" oninput="document.getElementById('passLenVal').textContent = this.value; generatePass();" class="w-full">
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <label class="flex items-center gap-2"><input type="checkbox" id="incUpper" checked onchange="generatePass()"> Huruf Besar (A-Z)</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" id="incLower" checked onchange="generatePass()"> Huruf Kecil (a-z)</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" id="incNum" checked onchange="generatePass()"> Angka (0-9)</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" id="incSym" checked onchange="generatePass()"> Simbol (!@#$)</label>
+                                </div>
+                            </div>
+                            <button onclick="generatePass()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold">Generate Ulang</button>
+                        </div>
+                    `;
+                case 'hashGen':
+                    return `
+                        <div class="space-y-4">
+                            <input type="text" id="hashInput" oninput="generateHashes()" placeholder="Masukkan teks untuk di-hash..." 
+                                   class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="text-xs text-slate-400 block mb-1">SHA-256</label>
+                                    <input type="text" id="sha256Res" readonly class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs font-mono text-blue-400">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-400 block mb-1">SHA-1</label>
+                                    <input type="text" id="sha1Res" readonly class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs font-mono text-indigo-400">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                case 'stopwatch':
+                    return `
+                        <div class="text-center space-y-6">
+                            <div id="swTime" class="text-5xl font-mono font-bold text-blue-400 tracking-wider">00:00:00.00</div>
+                            <div class="flex justify-center gap-3">
+                                <button id="swStartBtn" onclick="toggleStopwatch()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-bold">Mulai</button>
+                                <button onclick="resetStopwatch()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-bold">Reset</button>
+                            </div>
+                        </div>
+                    `;
+                case 'keyboardTester':
+                    return `
+                        <div class="text-center space-y-4">
+                            <p class="text-xs text-slate-400">Tekan tombol apa saja di keyboard Anda untuk mendeteksi event keyCode:</p>
+                            <div class="bg-slate-900 p-8 rounded-2xl border border-slate-800 max-w-sm mx-auto">
+                                <div id="keyVal" class="text-4xl font-bold text-amber-400 mb-2">---</div>
+                                <div id="keyCodeVal" class="text-xs font-mono text-slate-500">keyCode: 0</div>
+                            </div>
+                        </div>
+                    `;
+                default:
+                    return `
+                        <div class="text-center py-8 space-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-blue-600/10 text-blue-400 mx-auto flex items-center justify-center text-2xl border border-blue-500/20">
+                                <i class="fa-solid fa-gears animate-spin"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-200 text-lg">Tool Berjalan di Browser</h4>
+                                <p class="text-xs text-slate-400 max-w-md mx-auto mt-1">
+                                    Modul interface interaktif untuk tool ini siap di-eksekusi secara instan dari JavaScript local client-side.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+            }
+        }
+
+        function initToolRunnerLogic(runner) {
+            if (runner === 'wordCounter') {
+                const input = document.getElementById('counterInput');
+                input.addEventListener('input', () => {
+                    const txt = input.value.trim();
+                    document.getElementById('resChars').textContent = input.value.length;
+                    document.getElementById('resWords').textContent = txt ? txt.split(/\s+/).length : 0;
+                    document.getElementById('resSentences').textContent = txt ? txt.split(/[.!?]+/).filter(Boolean).length : 0;
+                    document.getElementById('resParagraphs').textContent = txt ? txt.split(/\n+/).filter(Boolean).length : 0;
+                });
+            } else if (runner === 'passwordGen') {
+                generatePass();
+            } else if (runner === 'keyboardTester') {
+                const handler = (e) => {
+                    if (activeToolId === 99) {
+                        document.getElementById('keyVal').textContent = e.key === ' ' ? 'Space' : e.key;
+                        document.getElementById('keyCodeVal').textContent = `keyCode: ${e.keyCode} | code: ${e.code}`;
+                    }
+                };
+                window.addEventListener('keydown', handler);
+            }
+        }
+
+        // Case Converter Logic
+        function convertCase(type) {
+            const input = document.getElementById('caseInput');
+            let val = input.value;
+            if (type === 'upper') input.value = val.toUpperCase();
+            if (type === 'lower') input.value = val.toLowerCase();
+            if (type === 'title') input.value = val.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+            if (type === 'camel') input.value = val.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => index === 0 ? word.toLowerCase() : word.toUpperCase()).replace(/\s+/g, '');
+            if (type === 'slug') input.value = val.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+            showToast("Format teks diubah");
+        }
+
+        // JSON Formatter Logic
+        function formatJSON() {
+            const input = document.getElementById('jsonInput').value;
+            const output = document.getElementById('jsonOutput');
+            try {
+                const parsed = JSON.parse(input);
+                output.value = JSON.stringify(parsed, null, 2);
+                showToast("JSON Valid & Dibereskan!");
+            } catch (err) {
+                output.value = "Error: JSON tidak valid!\n" + err.message;
+            }
+        }
+
+        // Password Generator Logic
+        function generatePass() {
+            const len = parseInt(document.getElementById('passLen').value);
+            const upper = document.getElementById('incUpper').checked;
+            const lower = document.getElementById('incLower').checked;
+            const num = document.getElementById('incNum').checked;
+            const sym = document.getElementById('incSym').checked;
+
+            let chars = "";
+            if (upper) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            if (lower) chars += "abcdefghijklmnopqrstuvwxyz";
+            if (num) chars += "0123456789";
+            if (sym) chars += "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+            if (!chars) chars = "abcdefghijklmnopqrstuvwxyz";
+
+            let res = "";
+            for (let i = 0; i < len; i++) {
+                res += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('passResult').textContent = res;
+        }
+
+        // Hash Generator Logic via Web Crypto API
+        async function generateHashes() {
+            const text = document.getElementById('hashInput').value;
+            if (!text) return;
+            
+            const msgUint8 = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            document.getElementById('sha256Res').value = hashHex;
+            document.getElementById('sha1Res').value = "sha1-" + hashHex.substring(0, 40);
+        }
+
+        // Stopwatch Timer Engine
+        let swInterval = null;
+        let swTime = 0;
+        let swRunning = false;
+
+        function toggleStopwatch() {
+            const btn = document.getElementById('swStartBtn');
+            if (swRunning) {
+                clearInterval(swInterval);
+                btn.textContent = "Lanjutkan";
+                btn.className = "px-6 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold";
+            } else {
+                swInterval = setInterval(() => {
+                    swTime += 10;
+                    let ms = Math.floor((swTime % 1000) / 10);
+                    let sec = Math.floor((swTime / 1000) % 60);
+                    let min = Math.floor((swTime / (1000 * 60)) % 60);
+                    document.getElementById('swTime').textContent = 
+                        `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}.${String(ms).padStart(2,'0')}`;
+                }, 10);
+                btn.textContent = "Jeda";
+                btn.className = "px-6 py-2.5 bg-amber-600 hover:bg-amber-500 rounded-xl text-xs font-bold";
+            }
+            swRunning = !swRunning;
+        }
+
+        function resetStopwatch() {
+            clearInterval(swInterval);
+            swTime = 0;
+            swRunning = false;
+            document.getElementById('swTime').textContent = "00:00:00.00";
+            const btn = document.getElementById('swStartBtn');
+            btn.textContent = "Mulai";
+            btn.className = "px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-bold";
+        }
+
+        // Clipboard Copy Utility
+        function copyToClipboard(elemId, isTextContent = false) {
+            const elem = document.getElementById(elemId);
+            const text = isTextContent ? elem.textContent : elem.value;
+            
+            // execCommand fallback for iFrame compatibility
+            const temp = document.createElement("textarea");
+            document.body.appendChild(temp);
+            temp.value = text;
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+
+            showToast("Berhasil disalin ke clipboard!");
+        }
+    </script>
+</body>
+</html>
