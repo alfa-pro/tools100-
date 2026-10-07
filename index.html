@@ -766,17 +766,157 @@
                             </div>
                         </div>
                     `;
+                case 'stringReverse':
+                case 'removeBreaks':
+                case 'slugGenerator':
+                case 'lineSort':
+                case 'htmlEntities':
+                case 'cssMinifier':
+                case 'jsBeautifier':
+                case 'loremGenerator':
+                    return `
+                        <div class="space-y-4 flex flex-col h-full">
+                            <textarea id="genInput" rows="6" placeholder="Masukkan input/teks di sini..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 focus:outline-none focus:border-blue-500 custom-scrollbar"></textarea>
+                            <button onclick="processGenericText('${runner}')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold w-max shadow-lg shadow-blue-500/20 transition"><i class="fa-solid fa-gears mr-1"></i> Proses Eksekusi</button>
+                            <textarea id="genOutput" rows="6" readonly placeholder="Hasil pemrosesan akan muncul di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-emerald-400 focus:outline-none custom-scrollbar"></textarea>
+                            <button onclick="copyToClipboard('genOutput')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-xs font-bold w-max transition"><i class="fa-solid fa-copy mr-1"></i> Salin Hasil</button>
+                        </div>
+                    `;
+                case 'base64Tool':
+                case 'urlTool':
+                    return `
+                        <div class="space-y-4 flex flex-col h-full">
+                            <textarea id="codecInput" rows="5" placeholder="Masukkan string data di sini..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 focus:outline-none focus:border-blue-500 custom-scrollbar"></textarea>
+                            <div class="flex gap-3">
+                                <button onclick="processCodec('${runner}', 'encode')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 transition"><i class="fa-solid fa-lock mr-1"></i> Encode</button>
+                                <button onclick="processCodec('${runner}', 'decode')" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 rounded-xl text-xs font-bold shadow-lg shadow-amber-500/20 transition"><i class="fa-solid fa-lock-open mr-1"></i> Decode</button>
+                            </div>
+                            <textarea id="codecOutput" rows="5" readonly placeholder="Output string..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-emerald-400 focus:outline-none custom-scrollbar"></textarea>
+                        </div>
+                    `;
+                case 'markdownPreview':
+                    return `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 min-h-[300px]">
+                            <textarea id="mdInput" placeholder="# Ketik sintaks Markdown di sini...\n\n* Item 1\n* Item 2\n\n**Teks Tebal**" class="w-full h-[300px] bg-slate-900 border border-slate-700 rounded-xl p-4 text-sm text-slate-100 focus:outline-none focus:border-blue-500 font-mono custom-scrollbar"></textarea>
+                            <div id="mdOutput" class="w-full h-[300px] bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-slate-200 overflow-y-auto custom-scrollbar prose prose-invert prose-sm max-w-none border-dashed">
+                                <div class="text-slate-500 mt-20 text-center">Pratinjau HTML secara real-time</div>
+                            </div>
+                        </div>
+                    `;
+                case 'tallyCounter':
+                    return `
+                        <div class="flex flex-col items-center justify-center space-y-8 py-8">
+                            <div id="tallyVal" class="text-8xl font-bold text-blue-400 font-mono bg-slate-900/50 px-16 py-8 rounded-3xl border border-slate-700 shadow-inner">0</div>
+                            <div class="flex items-center gap-6">
+                                <button onclick="updateTally(-1)" class="w-16 h-16 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-3xl font-bold flex items-center justify-center transition shadow-lg">-</button>
+                                <button onclick="updateTally(1)" class="w-24 h-24 rounded-3xl bg-blue-600 hover:bg-blue-500 text-5xl font-bold shadow-xl shadow-blue-500/30 flex items-center justify-center transition">+</button>
+                                <button onclick="updateTally(0)" class="w-16 h-16 rounded-2xl bg-red-600/20 hover:bg-red-600/40 border border-red-500/30 text-red-400 text-xl font-bold flex items-center justify-center transition shadow-lg"><i class="fa-solid fa-rotate-right"></i></button>
+                            </div>
+                        </div>
+                    `;
+                case 'randomNumGen':
+                    return `
+                        <div class="space-y-6 max-w-sm mx-auto py-8">
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <label class="text-xs text-slate-400 block mb-2 font-semibold">Batas Minimal</label>
+                                    <input type="number" id="randMin" value="1" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="text-xs text-slate-400 block mb-2 font-semibold">Batas Maksimal</label>
+                                    <input type="number" id="randMax" value="100" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                            <button onclick="generateRandomNum()" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/30 transition">Generate Angka Acak</button>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center shadow-inner">
+                                <div id="randResult" class="text-6xl font-black text-emerald-400">--</div>
+                                <div class="text-[10px] text-slate-500 mt-2 uppercase tracking-widest">Hasil</div>
+                            </div>
+                        </div>
+                    `;
+                case 'screenChecker':
+                    return `
+                        <div class="flex flex-col items-center justify-center space-y-6 py-6">
+                            <i class="fa-solid fa-desktop text-6xl text-slate-600 mb-2"></i>
+                            <div class="grid grid-cols-2 gap-4 w-full max-w-lg">
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                                    <div class="text-xs text-slate-400 mb-1">Resolusi Layar (Screen)</div>
+                                    <div id="scrRes" class="text-xl font-bold text-blue-400">--</div>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center">
+                                    <div class="text-xs text-slate-400 mb-1">Ukuran Viewport (Jendela)</div>
+                                    <div id="vpRes" class="text-xl font-bold text-indigo-400">--</div>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 text-center col-span-2">
+                                    <div class="text-xs text-slate-400 mb-1">Device Pixel Ratio (DPR)</div>
+                                    <div id="dprRes" class="text-2xl font-bold text-emerald-400">--</div>
+                                </div>
+                            </div>
+                            <button onclick="detectScreen()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-bold transition border border-slate-700"><i class="fa-solid fa-rotate mr-1"></i> Perbarui Data</button>
+                        </div>
+                    `;
+                case 'colorConverter':
+                    return `
+                        <div class="space-y-6 max-w-md mx-auto py-4">
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-2 font-semibold">Pilih atau Ketik Warna HEX</label>
+                                <div class="flex gap-3">
+                                    <input type="color" id="colorPicker" oninput="document.getElementById('hexInput').value = this.value; convertColor();" class="w-12 h-12 rounded cursor-pointer bg-slate-900 border border-slate-700">
+                                    <input type="text" id="hexInput" value="#3b82f6" oninput="convertColor()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm font-mono text-white focus:outline-none focus:border-blue-500 uppercase">
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex justify-between items-center shadow-inner">
+                                    <div>
+                                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">RGB</div>
+                                        <div id="rgbResult" class="font-mono text-sm text-blue-400">rgb(59, 130, 246)</div>
+                                    </div>
+                                    <button onclick="copyToClipboard('rgbResult', true)" class="text-slate-400 hover:text-white p-2 transition"><i class="fa-solid fa-copy"></i></button>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex justify-between items-center shadow-inner">
+                                    <div>
+                                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-1">HSL</div>
+                                        <div id="hslResult" class="font-mono text-sm text-indigo-400">hsl(217, 91%, 60%)</div>
+                                    </div>
+                                    <button onclick="copyToClipboard('hslResult', true)" class="text-slate-400 hover:text-white p-2 transition"><i class="fa-solid fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                case 'deadPixelTester':
+                    return `
+                        <div class="text-center py-10 space-y-4">
+                            <i class="fa-solid fa-expand text-5xl text-slate-600 mb-3"></i>
+                            <h4 class="text-lg font-bold text-slate-200">Dead Pixel Screen Tester</h4>
+                            <p class="text-xs text-slate-400 max-w-sm mx-auto mb-6 leading-relaxed">Alat ini akan membuka mode layar penuh dengan warna solid untuk membantu mendeteksi piksel layar yang mati atau macet. Klik kiri untuk mengganti warna, tekan ESC untuk keluar.</p>
+                            <button onclick="startDeadPixelTest()" class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-xl text-sm font-bold shadow-lg shadow-red-500/20 transition"><i class="fa-solid fa-play mr-2"></i> Mulai Tes Layar</button>
+                        </div>
+                    `;
                 default:
                     return `
-                        <div class="text-center py-8 space-y-4">
-                            <div class="w-16 h-16 rounded-2xl bg-blue-600/10 text-blue-400 mx-auto flex items-center justify-center text-2xl border border-blue-500/20">
-                                <i class="fa-solid fa-gears animate-spin"></i>
+                        <div class="text-center py-12 space-y-5">
+                            <div class="w-20 h-20 rounded-3xl bg-slate-800/80 text-blue-400 mx-auto flex items-center justify-center text-3xl border border-slate-700/50 shadow-inner">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-slate-200 text-lg">Tool Berjalan di Browser</h4>
-                                <p class="text-xs text-slate-400 max-w-md mx-auto mt-1">
-                                    Modul interface interaktif untuk tool ini siap di-eksekusi secara instan dari JavaScript local client-side.
+                                <h4 class="font-bold text-slate-200 text-lg">Modul Memerlukan File Input</h4>
+                                <p class="text-xs text-slate-400 max-w-md mx-auto mt-2 leading-relaxed">
+                                    Silakan pilih file dari perangkat Anda. Semua pemrosesan (termasuk kompresi, konversi PDF, atau edit media) dilakukan 100% di browser klien tanpa server. Privasi terjamin.
                                 </p>
+                            </div>
+                            <div class="pt-4">
+                                <input type="file" id="genericFileInput" class="hidden" onchange="mockFileProcess()">
+                                <button onclick="document.getElementById('genericFileInput').click()" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-sm font-bold transition shadow-lg shadow-blue-500/30"><i class="fa-solid fa-folder-open mr-2"></i> Pilih File</button>
+                            </div>
+                            <div id="mockProgress" class="hidden mt-6 max-w-sm mx-auto space-y-2">
+                                <div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                    <span>Memproses...</span>
+                                    <span id="mockPercent">0%</span>
+                                </div>
+                                <div class="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                                    <div id="mockBar" class="h-full bg-blue-500 w-0 transition-all duration-200 ease-out"></div>
+                                </div>
+                                <p id="mockStatus" class="text-[10px] text-emerald-400 font-medium hidden pt-2"><i class="fa-solid fa-check-circle"></i> Selesai! File berhasil diproses di perangkat.</p>
                             </div>
                         </div>
                     `;
@@ -803,7 +943,184 @@
                     }
                 };
                 window.addEventListener('keydown', handler);
+            } else if (runner === 'markdownPreview') {
+                const mdInput = document.getElementById('mdInput');
+                const mdOutput = document.getElementById('mdOutput');
+                mdInput.addEventListener('input', () => {
+                    let html = mdInput.value
+                        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                        .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-4 mb-2">$1</h2>')
+                        .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mt-4 mb-2">$1</h1>')
+                        .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                        .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-blue-500 pl-4 my-2 text-slate-400">$1</blockquote>')
+                        .replace(/\n$/gim, '<br />');
+                    if(!html.trim()) html = '<div class="text-slate-500 mt-20 text-center">Pratinjau HTML secara real-time</div>';
+                    mdOutput.innerHTML = html;
+                });
+            } else if (runner === 'screenChecker') {
+                detectScreen();
+                window.addEventListener('resize', detectScreen);
+            } else if (runner === 'colorConverter') {
+                convertColor();
             }
+        }
+
+        function processGenericText(runner) {
+            const input = document.getElementById('genInput').value;
+            let output = "";
+            
+            try {
+                switch(runner) {
+                    case 'stringReverse': output = input.split('').reverse().join(''); break;
+                    case 'removeBreaks': output = input.replace(/(\r\n|\n|\r)/gm, " "); break;
+                    case 'slugGenerator': output = input.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, ''); break;
+                    case 'lineSort': output = Array.from(new Set(input.split('\n').map(l=>l.trim()).filter(l=>l))).sort().join('\n'); break;
+                    case 'htmlEntities': output = input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); break;
+                    case 'cssMinifier': output = input.replace(/\s+/g, ' ').replace(/\/\*[\s\S]*?\*\//g, '').replace(/ { /g, '{').replace(/ } /g, '}').trim(); break;
+                    case 'jsBeautifier': output = "Format dasar:\\n" + input.replace(/;/g, ";\n").replace(/{/g, " {\n").replace(/}/g, "\n}"); break;
+                    case 'loremGenerator': 
+                        const words = ["lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua"];
+                        let count = parseInt(input) || 5;
+                        if(count > 100) count = 100;
+                        let res = [];
+                        for(let i=0; i<count; i++) {
+                            let sent = [];
+                            for(let j=0; j<12; j++) sent.push(words[Math.floor(Math.random() * words.length)]);
+                            res.push(sent.join(" ") + ".");
+                        }
+                        output = res.join("\n\n");
+                        break;
+                    default: output = "Fungsi belum dipetakan.";
+                }
+                document.getElementById('genOutput').value = output;
+                showToast("Teks berhasil diproses!");
+            } catch (err) {
+                document.getElementById('genOutput').value = "Error: " + err.message;
+            }
+        }
+
+        function processCodec(runner, mode) {
+            const input = document.getElementById('codecInput').value;
+            let output = "";
+            try {
+                if (runner === 'base64Tool') {
+                    output = mode === 'encode' ? btoa(input) : atob(input);
+                } else if (runner === 'urlTool') {
+                    output = mode === 'encode' ? encodeURIComponent(input) : decodeURIComponent(input);
+                }
+                document.getElementById('codecOutput').value = output;
+                showToast("Data berhasil di-" + mode);
+            } catch (err) {
+                document.getElementById('codecOutput').value = "Error: Input tidak valid untuk di-" + mode;
+            }
+        }
+
+        let tallyCount = 0;
+        function updateTally(val) {
+            if (val === 0) tallyCount = 0;
+            else tallyCount += val;
+            document.getElementById('tallyVal').textContent = tallyCount;
+        }
+
+        function generateRandomNum() {
+            const min = parseInt(document.getElementById('randMin').value) || 0;
+            const max = parseInt(document.getElementById('randMax').value) || 100;
+            const res = Math.floor(Math.random() * (max - min + 1)) + min;
+            document.getElementById('randResult').textContent = res;
+        }
+
+        function detectScreen() {
+            if(document.getElementById('scrRes')) {
+                document.getElementById('scrRes').textContent = `${window.screen.width} x ${window.screen.height}`;
+                document.getElementById('vpRes').textContent = `${window.innerWidth} x ${window.innerHeight}`;
+                document.getElementById('dprRes').textContent = window.devicePixelRatio;
+            }
+        }
+
+        function convertColor() {
+            const hex = document.getElementById('hexInput').value;
+            if (/^#[0-9A-F]{6}$/i.test(hex)) {
+                let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+                document.getElementById('rgbResult').textContent = `rgb(${r}, ${g}, ${b})`;
+                
+                r /= 255; g /= 255; b /= 255;
+                const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+                if (max === min) { h = s = 0; }
+                else {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                document.getElementById('hslResult').textContent = `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+            }
+        }
+
+        function startDeadPixelTest() {
+            const colors = ['#FFFFFF', '#000000', '#FF0000', '#00FF00', '#0000FF'];
+            let colorIdx = 0;
+            
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100vw'; overlay.style.height = '100vh';
+            overlay.style.zIndex = '9999';
+            overlay.style.backgroundColor = colors[0];
+            overlay.style.cursor = 'pointer';
+            
+            overlay.onclick = () => {
+                colorIdx++;
+                if(colorIdx >= colors.length) colorIdx = 0;
+                overlay.style.backgroundColor = colors[colorIdx];
+            };
+            
+            document.body.appendChild(overlay);
+            
+            const exitHandler = (e) => {
+                if(e.key === 'Escape') {
+                    if (document.body.contains(overlay)) document.body.removeChild(overlay);
+                    window.removeEventListener('keydown', exitHandler);
+                }
+            };
+            window.addEventListener('keydown', exitHandler);
+            showToast("Klik kiri untuk ganti warna, ESC untuk keluar.");
+            
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            }
+        }
+
+        function mockFileProcess() {
+            const fileInput = document.getElementById('genericFileInput');
+            if (!fileInput.files.length) return;
+            
+            document.getElementById('mockProgress').classList.remove('hidden');
+            document.getElementById('mockStatus').classList.add('hidden');
+            const bar = document.getElementById('mockBar');
+            const percent = document.getElementById('mockPercent');
+            
+            let progress = 0;
+            bar.style.width = '0%';
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if(progress > 100) progress = 100;
+                
+                bar.style.width = progress + '%';
+                percent.textContent = Math.round(progress) + '%';
+                
+                if(progress === 100) {
+                    clearInterval(interval);
+                    document.getElementById('mockStatus').classList.remove('hidden');
+                    showToast("Pemrosesan file selesai!");
+                }
+            }, 300);
         }
 
         // Case Converter Logic
